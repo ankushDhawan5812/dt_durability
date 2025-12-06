@@ -203,13 +203,13 @@ class CNCController:
         self.serial_port.write(b'$H\n')
         time.sleep(4)  # Give it time to complete homing
         
-        # After homing, move X away from the limit switch by 2mm
-        # This prevents X from sitting right on the limit switch at "home"
-        print("Moving X to 2mm offset from limit switch...")
-        self.serial_port.write(b'G90\n')  # Absolute mode
-        time.sleep(0.1)
-        self.serial_port.write(b'G0 X2\n')  # Move X to 2mm from machine home
-        time.sleep(1)
+        # # After homing, move X away from the limit switch by 2mm
+        # # This prevents X from sitting right on the limit switch at "home"
+        # print("Moving X to 2mm offset from limit switch...")
+        # self.serial_port.write(b'G90\n')  # Absolute mode
+        # time.sleep(0.1)
+        # self.serial_port.write(b'G0 X2\n')  # Move X to 2mm from machine home
+        # time.sleep(1)
         
         # Now reset the work coordinate system so this position (2mm from limit) becomes our new "home" (0,0,0)
         self.serial_port.write(b'G92 X0 Y0 Z0\n')  # Set current position as work coordinate 0,0,0
@@ -529,7 +529,7 @@ def main():
 
     # Unlock CNC and perform homing
     controller.unlock_cnc()
-    controller.set_feed_rate(500)
+    controller.set_feed_rate(50)
     
     # Configure homing directions
     # Set X to home in POSITIVE direction (where your limit switch is)
@@ -539,7 +539,7 @@ def main():
     
     # Configure X-axis pulloff distance to 1mm
     # This keeps Y and Z at their current GRBL-configured values
-    controller.set_axis_pulloff_distance('x', 1.0)
+    # controller.set_axis_pulloff_distance('x', 1.0)
     
     controller.move_to_machine_home()
     
